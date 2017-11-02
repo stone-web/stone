@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AuiBaseFrame</title>
+    <link rel="stylesheet" type="text/css" href="./css/aui.css" />
+    <style type="text/css">
+        header.aui-bar{padding-right: 0.75rem;padding-left: 0.75rem;}
+        header.aui-bar .aui-btn{padding: 0;}
+        .ui-search{
+            right: 3.5rem;
+            left: 2.75rem;
+            margin-top: 0.475rem;
+        }
+        .ui-search>div{
+            height: 1.3rem;
+            line-height: 1.3rem;
+            background: #5be6e8 url('./image/index04.png') no-repeat 0.75rem center;
+            background-size: 0.775rem auto;
+            -webkit-background-size: 0.775rem auto;
+            -moz-background-size: 0.775rem auto;
+            padding-left: 2rem;
+            font-size: 0.7rem;
+            color: #d0fcfd;
+            border-radius: 0.65rem;
+            -webit-border-radius: 0.65rem;
+            -moz-border-radius: 0.65rem;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header id="index" class="aui-bar aui-bar-nav aui-border-b">
+            <a class="aui-pull-left aui-btn" tapmode onclick="a()">
+                <img src="./image/index01.png" alt="" style="width: 1.575rem;height: 1.575rem;" />
+            </a>
+            <div class="aui-header-block ui-search">
+                <div tapmode onclick="openSearchGoods()">
+                    <!-- <span class="aui-iconfont aui-icon-search"></span> --> 请输入搜索关键字
+                </div>
+            </div>
+            <a class="aui-pull-right aui-btn" tapmode onclick="jumpChatList()" style="margin-left: 0.375rem;">
+                <img src="./image/index02.png" alt="" style="width: 1.05rem;height: 1.6rem;" />
+            </a>
+            <a class="aui-pull-right aui-btn" tapmode onclick="jumpChatList()">
+                <div class="aui-badge" v-show="messageCount" v-text="messageCount">99</div>
+                <img src="./image/index03.png" alt="" style="width: 1.05rem;height: 1.6rem;" />
+            </a>
+        </header>
+        <header id="my" class="aui-bar aui-bar-nav" style="display: none">
+            <a class="aui-pull-right aui-btn" tapmode style="margin-right: -0.45rem;">
+                <img src="./image/mess.png" alt="" style="width: 1rem;height: 1.125rem;" />
+                <div class="aui-dot" style="position:relative;top:-0.4rem; right:0.2rem;width:0.3rem;height:0.3rem"></div>
+            </a>
+            <a class="aui-pull-right aui-btn" tapmode onclick="jumpChatList()" style="margin-right: 0.75rem;">
+                <img src="./image/setting.png" alt="" style="width: 1.044rem;height: 1.044rem;" />
+            </a>
+        </header>
+        <footer class="aui-bar aui-bar-tab aui-border-t" id="footer">
+            <div class="aui-bar-tab-item aui-active" tapmode onclick="setIndex(0);">
+                <img :src="rootIndex==0?'./image/bottombtn0102.png':'./image/bottombtn0101.png'" alt="">
+                <!-- <img v-else src="./image/bottombtn0101.png" alt=""> -->
+                <div class="aui-bar-tab-label">首页</div>
+            </div>
+            <div class="aui-bar-tab-item" tapmode onclick="setIndex(1);">
+                <img :src="rootIndex==1?'./image/bottombtn0202.png':'./image/bottombtn0201.png'" alt="">
+                <!-- <img v-else src="./image/bottombtn0201.png" alt=""> -->
+                <div class="aui-bar-tab-label">合作</div>
+            </div>
+            <div class="aui-bar-tab-item" tapmode onclick="setIndex(2);">
+                <img :src="rootIndex==2?'./image/bottombtn0302.png':'./image/bottombtn0301.png'" alt="">
+                <!-- <img v-else src="./image/bottombtn0301.png" alt=""> -->
+                <div class="aui-bar-tab-label">农场</div>
+            </div>
+            <div class="aui-bar-tab-item" tapmode onclick="setIndex(3);">
+                <img :src="rootIndex==3?'./image/bottombtn0402.png':'./image/bottombtn0401.png'" alt="">
+                <!-- <img v-else src="./image/bottombtn0401.png" alt=""> -->
+                <div class="aui-bar-tab-label">知识</div>
+            </div>
+            <div class="aui-bar-tab-item" tapmode onclick="setIndex(4);">
+                <img :src="rootIndex==4?'./image/bottombtn0502.png':'./image/bottombtn0501.png'" alt="">
+                <!-- <img v-else src="./image/bottombtn0501.png" alt=""> -->
+                <div class="aui-bar-tab-label">我的</div>
+            </div>
+        </footer>
+    </div>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/lib/vue.js"></script>
+<script type="text/javascript" src="./script/lib/zepto.js"></script>
+<script type="text/javascript" src="./script/lib/md5.js"></script>
+<script type="text/javascript" src="./script/common.js"></script>
+<script type="text/javascript" src="./script/config.js"></script>
+<script type="text/javascript" src="./script/url.js"></script>
+<script type="text/javascript" src="./script/loading.js"></script>
+<script type="text/javascript" src="./script/ajax.js"></script>
+<script type="text/javascript" src="./script/service.js"></script>
+<script type="text/javascript" src="./script/scan.js"></script>
+<script type="text/javascript" src="./script/wx.js"></script>
+<script type="text/javascript" src="./script/lib/rongCloud.js"></script>
+<script type="text/javascript">
+
+    function changeHeader(selectHeader){
+        $("header").hide();
+        $(selectHeader).show();
+
+        $api.fixStatusBar($(selectHeader).get(0));
+    }
+
+    //-----------initPageBeforeApiReady
+    function setIndex(index){
+        vm.rootIndex = index;
+        $("#footer .aui-active").removeClass("aui-active");
+        $("#footer .aui-bar-tab-item").eq(index).addClass("aui-active");
+
+        if(index == 3){
+            if(!checkUser()){
+                return;
+            }
+        }
+
+        if(index == 4){
+            changeHeader("#my");
+        }else{
+            changeHeader("#index");
+        }
+
+        api.setFrameGroupIndex({
+	        name: 'root',
+	        index: index
+        });
+    }
+
+    //---------------------------------
+    /*加载数据数量*/
+    var RESOURCE_NUM = 2;
+
+    // ----------页面全局变量------------
+    var vm = null,rect;
+
+    var initNum = 0;
+
+    //-------------
+    apiready = function(){
+        api.parseTapmode();
+        $api.fixStatusBar($api.dom("header"));
+		/* 两次返回退出应用  */
+    	exitApp();
+
+        /*初始化 rongCloud*/
+        rongCloud.init();
+        /* 两次返回退出应用  */
+        exitApp();
+
+        initPage();
+
+        new Vue({
+            el:"#app",
+            data:{
+                rootIndex: 0,/*当前frame的下标*/
+            	messageCount: 0,/*新接受的消息数量*/
+            },
+            created:function(){
+                vm = this;
+                initData();
+            }
+        });
+        api.addEventListener({
+            name: 'myEvent'
+        }, function(ret, err) {
+            scan.switchLight();
+         });
+        api.addEventListener({
+            name: 'closeEvent'
+        }, function(ret, err) {
+            api.closeFrame({
+                name: 'scan_frm'
+            });
+            scan._closeView();
+         });
+
+        /*监听接收消息是未读消息的变化*/
+        api.addEventListener({
+            name: 'hasNews'
+        }, function(ret, err){
+            if( ret ){
+                rongCloud.getTotalUnreadCount(function(ret){
+                    // console.log(JSON.stringify(ret));
+                    vm.messageCount = ret.result;
+                });
+            }
+        });
+    };
+
+    // 初始化页面
+    function initPage(){
+
+        // 清除缓存
+        $api.clearStorage();
+        rect = {
+            x:0,
+            y:$api.dom("header").offsetHeight,
+            h:api.winHeight-$api.dom("header").offsetHeight-$api.dom("footer").offsetHeight,
+            w:api.winWidth
+        };
+
+        init(function(){
+
+            api.openFrameGroup({
+                name: 'root',
+                rect: rect,
+                scrollEnabled:false,
+                frames: [{
+                    name: 'index_fg1_frm',
+                    url: './html/index_fg1_frm.html',
+                },{
+                    name: 'index_fg2_frm',
+                    url: './html/index_fg2_frm.html',
+                },{
+                    name: 'index_fg3_frm',
+                    url: './html/index_fg3_frm.html',
+                },{
+                    name: 'index_fg4_frm',
+                    url: './html/index_fg4_frm.html',
+                },{
+                    name: 'index_fg5_frm',
+                    url: './html/index_fg5_frm.html',
+                }]
+            }, function(ret, err) {
+                var index = ret.index;
+                vm.rootIndex = index;
+            });
+        })
+    }
+
+    function startApp(callback){
+        initNum++;
+        if(initNum == RESOURCE_NUM){
+            callback();
+        }
+    }
+
+    //app 加载初始化......
+    function init(callback){
+        // 缓存Banner信息
+        service.bannerList(1,function(ret){
+            console.log("Banner 数据缓存完成......");
+            startApp(callback);
+        })
+        service.getCatList(function(ret){
+            console.log("商品分类 数据缓存完成......");
+            startApp(callback);
+        })
+    }
+
+    //初始化数据
+    function initData(){
+
+    }
+    //扫描二维码
+    function a(){
+       scan.openView();
+    }
+
+
+    /*跳转聊天界面*/
+    function jumpChatList(){
+        api.openWin({
+            name: 'chatList_win',
+            url: './html/chatList_win.html',
+        });
+    }
+</script>
+</html>
